@@ -12,7 +12,7 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    func fetchData<T: Decodable>(url: URLRequestConvertible, type: T.Type = T.self, completionHandler: @escaping (Result<T, Error>) -> Void) {
+    func callRequest<T: Decodable>(url: URLRequestConvertible, type: T.Type = T.self, completionHandler: @escaping (Result<T, Error>) -> Void) {
         AF.request(url)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: type) { response in

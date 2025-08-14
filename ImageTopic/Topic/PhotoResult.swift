@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TopicResult: Decodable {
+struct PhotoResult: Decodable {
     let id: String
     // 2025-06-09T12:22:03Z
     let created_at: String

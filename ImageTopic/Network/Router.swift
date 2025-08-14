@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 enum Router: URLRequestConvertible {
-    case getTopicPhotos(id: String, page: Int)
+    case getTopicPhotos(topic: Topic, page: Int)
     
     var baseURL: URL {
         guard let url = URL(string: APIInfo.baseURLString) else {
@@ -24,8 +24,8 @@ enum Router: URLRequestConvertible {
     
     var paths: String? {
         switch self {
-        case .getTopicPhotos(let id, _):
-            return "/topics/\(id)/photos"
+        case .getTopicPhotos(let topic, _):
+            return "/topics/\(topic.rawValue)/photos"
         }
     }
     

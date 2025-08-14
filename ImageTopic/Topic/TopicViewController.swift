@@ -28,11 +28,7 @@ final class TopicViewController: UIViewController {
         return tableView
     }()
     
-    var topicResults = [TopicResult]() {
-        didSet {
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
-        }
-    }
+    private let viewModel = TopicViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,16 +37,9 @@ final class TopicViewController: UIViewController {
         setupLayout()
         setupDelegates()
         setupActions()
+        setupBindings()
         
-        let url = Router.getTopicPhotos(id: "film", page: 1)
-        NetworkManager.shared.fetchData(url: url, type: [TopicResult].self) { [weak self] result in
-            switch result {
-            case .success(let value):
-                self?.topicResults = value
-            case .failure(let error):
-                print(error)
-            }
-        }
+        viewModel.input.viewDidLoadTrigger.value = ()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +86,13 @@ final class TopicViewController: UIViewController {
         profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
     }
     
+    private func setupBindings() {
+        viewModel.output.responseTrigger.lazyBind { [weak self] indexPaths in
+            let indexPaths = indexPaths.map { IndexPath(row: $0, section: 0) }
+            self?.tableView.reloadRows(at: indexPaths, with: .none)
+        }
+    }
+    
     @objc
     private func profileButtonTapped() {
         print(#function)
@@ -105,12 +101,12 @@ final class TopicViewController: UIViewController {
 
 extension TopicViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return viewModel.topics.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: TopicTableViewCell.self, for: indexPath)
-        cell.configure(title: "골든 아워", topicResults: topicResults)
+        cell.configure(title: viewModel.topics[indexPath.row].description, photoResults: viewModel.output.photos[indexPath.row])
         return cell
     }
 }

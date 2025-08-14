@@ -27,7 +27,7 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
         return collectionView
     }()
     
-    private var list = [TopicResult]()
+    private var list = [PhotoResult]()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,10 +40,11 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func configure(title: String, topicResults: [TopicResult]) {
+        
+    func configure(title: String, photoResults: [PhotoResult]) {
         titleLabel.text = title
-        list = topicResults
+        list = photoResults
+        collectionView.reloadData()
     }
     
     private func setupUI() {
