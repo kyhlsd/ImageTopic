@@ -27,6 +27,8 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
         return collectionView
     }()
     
+    private var list = [TopicResult]()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -39,8 +41,9 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(title: String) {
+    func configure(title: String, topicResults: [TopicResult]) {
         titleLabel.text = title
+        list = topicResults
     }
     
     private func setupUI() {
@@ -71,24 +74,13 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
 
 extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return list.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(cellType: PhotoCollectionViewCell.self, for: indexPath)
-        switch indexPath.item {
-        case 0:
-            let url = URL(string: "https://picsum.photos/200/300")
-            cell.configureData(url: url)
-        case 1:
-            let url = URL(string: "https://picsum.photos/400/200")
-            cell.configureData(url: url)
-        default:
-            let url = URL(string: "https://picsum.photos/200/200")
-            cell.configureData(url: url)
-        }
-//        let url = URL(string: "https://picsum.photos/200/300")
-//        cell.configureData(url: url)
+        let url = URL(string: list[indexPath.item].urls.small)
+        cell.configureData(url: url)
         return cell
     }
 }

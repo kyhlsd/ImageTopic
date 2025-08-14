@@ -28,6 +28,12 @@ final class TopicViewController: UIViewController {
         return tableView
     }()
     
+    var topicResults = [TopicResult]() {
+        didSet {
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,6 +41,16 @@ final class TopicViewController: UIViewController {
         setupLayout()
         setupDelegates()
         setupActions()
+        
+        let url = Router.getTopicPhotos(id: "film", page: 1)
+        NetworkManager.shared.fetchData(url: url, type: [TopicResult].self) { [weak self] result in
+            switch result {
+            case .success(let value):
+                self?.topicResults = value
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,7 +110,7 @@ extension TopicViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: TopicTableViewCell.self, for: indexPath)
-        cell.configure(title: "골든 아워")
+        cell.configure(title: "골든 아워", topicResults: topicResults)
         return cell
     }
 }
