@@ -20,7 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        let topicNav = UINavigationController(rootViewController: TopicViewController())
+        let topicNav = UINavigationController(rootViewController: PhotoDetailViewController())
+//        let topicNav = UINavigationController(rootViewController: TopicViewController())
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
         topicNav.navigationBar.standardAppearance = navAppearance

@@ -62,7 +62,7 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(AppPadding.verticalInset)
             make.horizontalEdges.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(AppPadding.verticalPadding)
         }
     }
     
@@ -89,5 +89,9 @@ extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSour
         let ratio = CGFloat(photo.width) / CGFloat(photo.height)
         let height = collectionView.frame.height
         return CGSize(width: height * ratio, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
     }
 }
