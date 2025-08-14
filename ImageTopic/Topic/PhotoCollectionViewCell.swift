@@ -15,6 +15,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = Constants.cornerRadius
         imageView.clipsToBounds = true
+        imageView.kf.indicatorType = .activity
         return imageView
     }()
     
@@ -36,15 +37,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
     
     func configureData(url: URL?) {
         guard let url else { return }
-        imageView.kf.setImage(with: url) { [weak self] result in
-            guard case .success(let value) = result, let self else { return }
-            
-            imageView.snp.updateConstraints { make in
-                let ratio = value.image.size.width / value.image.size.height
-                make.width.equalTo(200 * ratio).priority(999)
-            }
-            invalidateIntrinsicContentSize()
-        }
+        imageView.kf.setImage(with: url)
     }
     
     private func setupUI() {
@@ -54,8 +47,6 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
     private func setupLayout() {
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(200).priority(999)
-            make.width.equalTo(100).priority(999)
         }
     }
 }

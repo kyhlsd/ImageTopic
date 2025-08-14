@@ -20,7 +20,6 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = AppPadding.horizontalInset
         layout.sectionInset = UIEdgeInsets(top: 0, left: AppPadding.horizontalPadding, bottom: 0, right: AppPadding.horizontalPadding)
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(cellType: PhotoCollectionViewCell.self)
         collectionView.showsHorizontalScrollIndicator = false
@@ -73,7 +72,7 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
     }
 }
 
-extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return list.count
     }
@@ -83,5 +82,12 @@ extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSour
         let url = URL(string: list[indexPath.item].urls.small)
         cell.configureData(url: url)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let photo = list[indexPath.item]
+        let ratio = CGFloat(photo.width) / CGFloat(photo.height)
+        let height = collectionView.frame.height
+        return CGSize(width: height * ratio, height: height)
     }
 }

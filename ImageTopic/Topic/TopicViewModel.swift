@@ -17,7 +17,6 @@ final class TopicViewModel {
     }
     
     struct Output {
-//        let photos = [Observable<[PhotoResult]>](repeating: Observable([PhotoResult]()), count: Topic.allCases.count)
         var photos = [[PhotoResult]](repeating: [PhotoResult](), count: Topic.allCases.count)
         let responseTrigger = Observable([Int]())
     }
@@ -51,7 +50,6 @@ final class TopicViewModel {
         NetworkManager.shared.callRequest(url: url, type: [PhotoResult].self) { [weak self] result in
             switch result {
             case .success(let value):
-//                self?.output.photos[index].value = value
                 self?.output.photos[index] = value
                 group?.leave()
             case .failure(let error):
