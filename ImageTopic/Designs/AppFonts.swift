@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIFont {
-    static let title = UIFont.boldSystemFont(ofSize: 18)
+    static let title = UIFont.systemFont(ofSize: 18, weight: .heavy)
     static let subtitle = UIFont.boldSystemFont(ofSize: 16)
     enum Body {
         static let normal = UIFont.systemFont(ofSize: 14)

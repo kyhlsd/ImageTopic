@@ -20,7 +20,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        window?.rootViewController = ViewController()
+        let topicNav = UINavigationController(rootViewController: TopicViewController())
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        topicNav.navigationBar.standardAppearance = navAppearance
+        topicNav.navigationBar.scrollEdgeAppearance = navAppearance
+        topicNav.navigationBar.compactAppearance = navAppearance
+        topicNav.view.backgroundColor = .white
+        topicNav.navigationBar.tintColor = .black
+        topicNav.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "chart.xyaxis.line"), tag: 0)
+        
+        let tabBarController = UITabBarController()
+        let tabAppearance = UITabBarAppearance()
+        tabBarController.tabBar.standardAppearance = tabAppearance
+        tabBarController.tabBar.scrollEdgeAppearance = tabAppearance
+        tabBarController.tabBar.tintColor = .black
+        tabBarController.tabBar.unselectedItemTintColor = .systemGray
+        tabBarController.viewControllers = [topicNav, ViewController()]
+        
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
 
