@@ -104,6 +104,8 @@ final class PhotoDetailViewController: UIViewController {
         return control
     }()
     
+    private let viewModel = PhotoDetailViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -112,6 +114,8 @@ final class PhotoDetailViewController: UIViewController {
         setupActions()
         setupBindings()
         
+        viewModel.id = "OEg36vuwa6g"
+        viewModel.input.viewDidLoadTrigger.value = ()
     }
     
     override func viewDidLayoutSubviews() {
@@ -217,7 +221,10 @@ final class PhotoDetailViewController: UIViewController {
     }
     
     private func setupBindings() {
-        
+        viewModel.output.statistic.bind { [weak self] statistic in
+            self?.viewsResultLabel.text = statistic?.views.total.formatted()
+            self?.downloadResultLabel.text = statistic?.downloads.total.formatted()
+        }
     }
     
     @objc

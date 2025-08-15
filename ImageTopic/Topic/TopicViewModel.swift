@@ -28,8 +28,7 @@ final class TopicViewModel {
         output = Output()
         
         input.viewDidLoadTrigger.lazyBind { [weak self] _ in
-            guard let self else { return }
-            callInitialRequests()
+            self?.callInitialRequests()
         }
     }
     
