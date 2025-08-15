@@ -114,12 +114,15 @@ final class PhotoDetailViewController: UIViewController {
         setupActions()
         setupBindings()
         
-        viewModel.id = "OEg36vuwa6g"
         viewModel.input.viewDidLoadTrigger.value = ()
     }
     
     override func viewDidLayoutSubviews() {
         photoUserImageView.layer.cornerRadius = photoUserImageView.frame.height / 2
+    }
+    
+    func configureData(_ photoResult: PhotoResult) {
+        viewModel.output.photoResult.value = photoResult
     }
     
     private func setupUI() {
@@ -169,8 +172,6 @@ final class PhotoDetailViewController: UIViewController {
         photoImageView.snp.makeConstraints { make in
             make.top.equalTo(photoUserImageView.snp.bottom).offset(AppPadding.verticalInset)
             make.horizontalEdges.equalToSuperview()
-            // TODO: 여기 삭제
-            make.height.equalTo(400)
         }
         
         infoLabel.snp.makeConstraints { make in
@@ -222,9 +223,30 @@ final class PhotoDetailViewController: UIViewController {
     
     private func setupBindings() {
         viewModel.output.statistic.bind { [weak self] statistic in
-            self?.viewsResultLabel.text = statistic?.views.total.formatted()
-            self?.downloadResultLabel.text = statistic?.downloads.total.formatted()
+            self?.configureStatistics(with: statistic)
         }
+        
+        viewModel.output.photoResult.bind { [weak self] photoResult in
+            self?.configurePhotoResult(with: photoResult)
+        }
+    }
+    
+    private func configureStatistics(with statistic: StatisticResult?) {
+        viewsResultLabel.text = statistic?.views.total.formatted()
+        downloadResultLabel.text = statistic?.downloads.total.formatted()
+    }
+    
+    private func configurePhotoResult(with photo: PhotoResult?) {
+        guard let photo else { return }
+        let profileUrl = URL(string: photo.user.profile_image.medium)
+        photoUserImageView.kf.setImage(with: profileUrl)
+        photoUserNameLabel.text = photo.user.name
+        photoDateLabel.text = photo.created_at
+        
+        let imageUrl = URL(string: photo.urls.small)
+        photoImageView.kf.setImage(with: imageUrl)
+        
+        sizeResultLabel.text = "\(photo.width) x \(photo.height)"
     }
     
     @objc

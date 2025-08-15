@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol PushDetailVCDelegate: AnyObject {
+    func pushDetailVC(_ photoResult: PhotoResult)
+}
+
 final class TopicViewController: UIViewController {
     
     private let profileButton = {
@@ -107,6 +111,15 @@ extension TopicViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(cellType: TopicTableViewCell.self, for: indexPath)
         cell.configure(title: viewModel.topics[indexPath.row].description, photoResults: viewModel.output.photos[indexPath.row])
+        cell.delegate = self
         return cell
+    }
+}
+
+extension TopicViewController: PushDetailVCDelegate {
+    func pushDetailVC(_ photoResult: PhotoResult) {
+        let viewController = PhotoDetailViewController()
+        viewController.configureData(photoResult)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }

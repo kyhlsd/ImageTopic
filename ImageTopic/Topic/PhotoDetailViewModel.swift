@@ -18,9 +18,8 @@ final class PhotoDetailViewModel {
     
     struct Output {
         let statistic = Observable<StatisticResult?>(nil)
+        let photoResult = Observable<PhotoResult?>(nil)
     }
-    
-    var id = ""
     
     init() {
         input = Input()
@@ -32,7 +31,9 @@ final class PhotoDetailViewModel {
     }
     
     private func callRequest() {
-        let url = Router.getStatistics(id: id)
+        guard let photoResult = output.photoResult.value else { return }
+        
+        let url = Router.getStatistics(id: photoResult.id)
         NetworkManager.shared.callRequest(url: url, type: StatisticResult.self) { [weak self] result in
             switch result {
             case .success(let value):

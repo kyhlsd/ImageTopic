@@ -27,6 +27,7 @@ final class TopicTableViewCell: UITableViewCell, Identifying {
     }()
     
     private var list = [PhotoResult]()
+    weak var delegate: PushDetailVCDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -92,6 +93,6 @@ extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        delegate?.pushDetailVC(list[indexPath.row])
     }
 }
