@@ -8,5 +8,5 @@
 import Foundation
 
 enum Constants {
-    static let cornerRadius = 8.0
+    static let cornerRadius = 12.0
 }
