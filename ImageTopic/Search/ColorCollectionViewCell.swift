@@ -59,10 +59,17 @@ final class ColorCollectionViewCell: UICollectionViewCell, Identifying {
         colorView.layer.cornerRadius = colorView.frame.height / 2
     }
     
-    func configure(text: String) {
-        colorView.backgroundColor = .black
-        colorLabel.text = text
-        containerView.backgroundColor = .systemGray6
+    func configure(color: ColorCategory, isSelected: Bool) {
+        colorView.backgroundColor = UIColor(named: "\(color.rawValue)Custom")
+        colorLabel.text = color.description
+        
+        if isSelected {
+            containerView.backgroundColor = .systemBlue
+            colorLabel.textColor = .white
+        } else {
+            containerView.backgroundColor = .systemGray6
+            colorLabel.textColor = .black
+        }
     }
     
     private func setupUI() {

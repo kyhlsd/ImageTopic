@@ -13,12 +13,12 @@ final class SearchPhotoViewController: UIViewController {
     private let colorCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = AppPadding.horizontalInset
+        layout.minimumLineSpacing = AppPadding.horizontalInset
         layout.sectionInset = UIEdgeInsets(top: 0, left: AppPadding.horizontalPadding, bottom: 0, right: 0)
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(cellType: ColorCollectionViewCell.self)
-        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
     
@@ -41,6 +41,8 @@ final class SearchPhotoViewController: UIViewController {
         button.clipsToBounds = true
         return button
     }()
+    
+    private let viewModel = SearchPhotoViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,23 +91,25 @@ final class SearchPhotoViewController: UIViewController {
     }
     
     private func setupBindings() {
-        
+        viewModel.output.reloadColorCellTrigger.lazyBind { [weak self] indices in
+            let indexPaths = indices.map { IndexPath(item: $0, section: 0)}
+            self?.colorCollectionView.reloadItems(at: indexPaths)
+        }
     }
 }
 
-extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return viewModel.colors.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(cellType: ColorCollectionViewCell.self, for: indexPath)
-        if indexPath.item == 0 {
-            cell.configure(text: "검정")
-        } else {
-            cell.configure(text: "옐로우")
-        }
-        
+        cell.configure(color: viewModel.colors[indexPath.item], isSelected: viewModel.getIsSelected(index: indexPath.item))
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.input.colorCellTappedTrigger.value = indexPath.item
     }
 }
