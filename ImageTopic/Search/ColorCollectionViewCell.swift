@@ -43,7 +43,7 @@ final class ColorCollectionViewCell: UICollectionViewCell, Identifying {
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
         let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width,
-                                height: 28)
+                                height: frame.height)
         let autoSize = contentView.systemLayoutSizeFitting(
             targetSize,
             withHorizontalFittingPriority: .fittingSizeLevel,

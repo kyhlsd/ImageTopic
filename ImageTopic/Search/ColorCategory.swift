@@ -28,3 +28,15 @@ enum ColorCategory: String, CaseIterable {
         }
     }
 }
+
+enum OrderBy: String {
+    case latest
+    case relevant
+    
+    var description: String {
+        switch self {
+        case .latest: return "최신순"
+        case .relevant: return "관련순"
+        }
+    }
+}

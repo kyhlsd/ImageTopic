@@ -15,7 +15,7 @@ final class SearchPhotoViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = AppPadding.horizontalInset
         layout.sectionInset = UIEdgeInsets(top: 0, left: AppPadding.horizontalPadding, bottom: 0, right: 0)
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.estimatedItemSize = CGSize(width: 80, height: 28)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(cellType: ColorCollectionViewCell.self)
         collectionView.showsHorizontalScrollIndicator = false
@@ -42,6 +42,17 @@ final class SearchPhotoViewController: UIViewController {
         return button
     }()
     
+    private let photoCollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 4
+        layout.minimumInteritemSpacing = 4
+        layout.sectionInset = .zero
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(cellType: PhotoCollectionViewCell.self)
+        return collectionView
+    }()
+    
     private let viewModel = SearchPhotoViewModel()
     
     override func viewDidLoad() {
@@ -64,7 +75,7 @@ final class SearchPhotoViewController: UIViewController {
         navigationItem.backButtonTitle = " "
         navigationItem.searchController = UISearchController()
         
-        [colorCollectionView, sortButton].forEach {
+        [colorCollectionView, sortButton, photoCollectionView].forEach {
             view.addSubview($0)
         }
     }
@@ -83,11 +94,21 @@ final class SearchPhotoViewController: UIViewController {
             make.trailing.equalTo(sortButton.snp.leading).offset(-AppPadding.horizontalInset)
             make.verticalEdges.equalTo(sortButton)
         }
+        
+        photoCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(colorCollectionView.snp.bottom).offset(AppPadding.verticalInset)
+            make.horizontalEdges.bottom.equalTo(safeArea)
+        }
     }
     
     private func setupDelegates() {
         colorCollectionView.delegate = self
         colorCollectionView.dataSource = self
+        
+        photoCollectionView.delegate = self
+        photoCollectionView.dataSource = self
+        
+        navigationItem.searchController?.searchBar.delegate = self
     }
     
     private func setupBindings() {
@@ -95,21 +116,55 @@ final class SearchPhotoViewController: UIViewController {
             let indexPaths = indices.map { IndexPath(item: $0, section: 0)}
             self?.colorCollectionView.reloadItems(at: indexPaths)
         }
+        
+        viewModel.output.photos.lazyBind { [weak self] _ in
+            self?.photoCollectionView.reloadData()
+        }
     }
 }
 
-extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.colors.count
+        if collectionView == colorCollectionView {
+            return viewModel.colors.count
+        } else {
+            return viewModel.output.photos.value.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(cellType: ColorCollectionViewCell.self, for: indexPath)
-        cell.configure(color: viewModel.colors[indexPath.item], isSelected: viewModel.getIsSelected(index: indexPath.item))
-        return cell
+        if collectionView == colorCollectionView {
+            let cell = collectionView.dequeueReusableCell(cellType: ColorCollectionViewCell.self, for: indexPath)
+            cell.configure(color: viewModel.colors[indexPath.item], isSelected: viewModel.getIsSelected(index: indexPath.item))
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(cellType: PhotoCollectionViewCell.self, for: indexPath)
+            let url = URL(string: viewModel.output.photos.value[indexPath.item].urls.small)
+            cell.configureData(url: url)
+            return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == colorCollectionView {
+            return CGSize(width: 80, height: 28)
+        } else {
+            let photo = viewModel.output.photos.value[indexPath.item]
+            let ratio = CGFloat(photo.width) / CGFloat(photo.height)
+            let width = (collectionView.frame.width - 4) / 2
+            return CGSize(width: width, height: width / ratio)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.input.colorCellTappedTrigger.value = indexPath.item
+        if collectionView == colorCollectionView {
+            viewModel.input.colorCellTappedTrigger.value = indexPath.item
+        }
+    }
+}
+
+extension SearchPhotoViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.input.searchWord.value = searchBar.text
     }
 }
