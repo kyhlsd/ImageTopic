@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import CHTCollectionViewWaterfallLayout
 
 final class SearchPhotoViewController: UIViewController {
 
@@ -43,9 +44,9 @@ final class SearchPhotoViewController: UIViewController {
     }()
     
     private let photoCollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 4
+        let layout = CHTCollectionViewWaterfallLayout()
+        layout.columnCount = 2
+        layout.minimumColumnSpacing = 4
         layout.minimumInteritemSpacing = 4
         layout.sectionInset = .zero
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -123,7 +124,7 @@ final class SearchPhotoViewController: UIViewController {
     }
 }
 
-extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == colorCollectionView {
             return viewModel.colors.count
@@ -145,21 +146,19 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == colorCollectionView {
-            return CGSize(width: 80, height: 28)
-        } else {
-            let photo = viewModel.output.photos.value[indexPath.item]
-            let ratio = CGFloat(photo.width) / CGFloat(photo.height)
-            let width = (collectionView.frame.width - 4) / 2
-            return CGSize(width: width, height: width / ratio)
-        }
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == colorCollectionView {
             viewModel.input.colorCellTappedTrigger.value = indexPath.item
         }
+    }
+}
+
+extension SearchPhotoViewController: CHTCollectionViewDelegateWaterfallLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let photo = viewModel.output.photos.value[indexPath.item]
+        let ratio = CGFloat(photo.width) / CGFloat(photo.height)
+        let width = (collectionView.frame.width - 4) / 2
+        return CGSize(width: width, height: width / ratio)
     }
 }
 

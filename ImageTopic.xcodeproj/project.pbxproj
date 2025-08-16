@@ -11,6 +11,7 @@
 		1593435B2E4DAE0500B4DFB3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1593435A2E4DAE0500B4DFB3 /* SnapKit */; };
 		1593440E2E4DBA3000B4DFB3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1593440D2E4DBA3000B4DFB3 /* Kingfisher */; };
 		159345A62E4DD6AF00B4DFB3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 159345A52E4DD6AF00B4DFB3 /* Alamofire */; };
+		15FC84EC2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 15FC84EB2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15FC84EC2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout in Frameworks */,
 				159345A62E4DD6AF00B4DFB3 /* Alamofire in Frameworks */,
 				1593440E2E4DBA3000B4DFB3 /* Kingfisher in Frameworks */,
 				1593435B2E4DAE0500B4DFB3 /* SnapKit in Frameworks */,
@@ -93,6 +95,7 @@
 				1593435A2E4DAE0500B4DFB3 /* SnapKit */,
 				1593440D2E4DBA3000B4DFB3 /* Kingfisher */,
 				159345A52E4DD6AF00B4DFB3 /* Alamofire */,
+				15FC84EB2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout */,
 			);
 			productName = ImageTopic;
 			productReference = 159341D22E4D9C9000B4DFB3 /* ImageTopic.app */;
@@ -126,6 +129,7 @@
 				159343592E4DAE0500B4DFB3 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				1593440C2E4DBA3000B4DFB3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				159345A42E4DD6AF00B4DFB3 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				15FC84EA2E508F0C0045A0C5 /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 159341D32E4D9C9000B4DFB3 /* Products */;
@@ -392,6 +396,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		15FC84EA2E508F0C0045A0C5 /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chiahsien/CHTCollectionViewWaterfallLayout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.10;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -409,6 +421,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 159345A42E4DD6AF00B4DFB3 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		15FC84EB2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15FC84EA2E508F0C0045A0C5 /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */;
+			productName = CHTCollectionViewWaterfallLayout;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
