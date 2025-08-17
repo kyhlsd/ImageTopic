@@ -16,7 +16,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let scene = (scene as? UIWindowScene) else { return }
+        
+        window = UIWindow(windowScene: scene)
+        
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        
+        let topicNav = UINavigationController(rootViewController: TopicViewController())
+        setupNav(topicNav, image: "chart.xyaxis.line", tag: 0)
+        let searchNav = UINavigationController(rootViewController: SearchPhotoViewController())
+        setupNav(searchNav, image: "magnifyingglass", tag: 1)
+        
+        let tabBarController = UITabBarController()
+        let tabAppearance = UITabBarAppearance()
+        tabBarController.tabBar.standardAppearance = tabAppearance
+        tabBarController.tabBar.scrollEdgeAppearance = tabAppearance
+        tabBarController.tabBar.tintColor = .black
+        tabBarController.tabBar.unselectedItemTintColor = .systemGray
+        tabBarController.viewControllers = [topicNav, searchNav]
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
+        func setupNav(_ nav: UINavigationController, image: String, tag: Int) {
+            nav.navigationBar.standardAppearance = navAppearance
+            nav.navigationBar.scrollEdgeAppearance = navAppearance
+            nav.navigationBar.compactAppearance = navAppearance
+            nav.view.backgroundColor = .white
+            nav.navigationBar.tintColor = .black
+            nav.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: image), tag: tag)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

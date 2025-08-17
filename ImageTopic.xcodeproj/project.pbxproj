@@ -6,8 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		159341EB2E4D9CDC00B4DFB3 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 159341EA2E4D9CCF00B4DFB3 /* .gitignore */; };
+		1593435B2E4DAE0500B4DFB3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1593435A2E4DAE0500B4DFB3 /* SnapKit */; };
+		1593440E2E4DBA3000B4DFB3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 1593440D2E4DBA3000B4DFB3 /* Kingfisher */; };
+		159345A62E4DD6AF00B4DFB3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 159345A52E4DD6AF00B4DFB3 /* Alamofire */; };
+		15FC84EC2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 15FC84EB2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		159341D22E4D9C9000B4DFB3 /* ImageTopic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageTopic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		159341EA2E4D9CCF00B4DFB3 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +45,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15FC84EC2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout in Frameworks */,
+				159345A62E4DD6AF00B4DFB3 /* Alamofire in Frameworks */,
+				1593440E2E4DBA3000B4DFB3 /* Kingfisher in Frameworks */,
+				1593435B2E4DAE0500B4DFB3 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +58,7 @@
 		159341C92E4D9C8F00B4DFB3 = {
 			isa = PBXGroup;
 			children = (
+				159341EA2E4D9CCF00B4DFB3 /* .gitignore */,
 				159341D42E4D9C9000B4DFB3 /* ImageTopic */,
 				159341D32E4D9C9000B4DFB3 /* Products */,
 			);
@@ -78,6 +92,10 @@
 			);
 			name = ImageTopic;
 			packageProductDependencies = (
+				1593435A2E4DAE0500B4DFB3 /* SnapKit */,
+				1593440D2E4DBA3000B4DFB3 /* Kingfisher */,
+				159345A52E4DD6AF00B4DFB3 /* Alamofire */,
+				15FC84EB2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout */,
 			);
 			productName = ImageTopic;
 			productReference = 159341D22E4D9C9000B4DFB3 /* ImageTopic.app */;
@@ -107,6 +125,12 @@
 			);
 			mainGroup = 159341C92E4D9C8F00B4DFB3;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				159343592E4DAE0500B4DFB3 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				1593440C2E4DBA3000B4DFB3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				159345A42E4DD6AF00B4DFB3 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				15FC84EA2E508F0C0045A0C5 /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 159341D32E4D9C9000B4DFB3 /* Products */;
 			projectDirPath = "";
@@ -122,6 +146,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				159341EB2E4D9CDC00B4DFB3 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,9 +174,11 @@
 				INFOPLIST_FILE = ImageTopic/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -159,9 +186,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yh.ImageTopic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -176,9 +207,11 @@
 				INFOPLIST_FILE = ImageTopic/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -186,9 +219,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yh.ImageTopic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -333,6 +370,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		159343592E4DAE0500B4DFB3 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		1593440C2E4DBA3000B4DFB3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
+		159345A42E4DD6AF00B4DFB3 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		15FC84EA2E508F0C0045A0C5 /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chiahsien/CHTCollectionViewWaterfallLayout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.10;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1593435A2E4DAE0500B4DFB3 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 159343592E4DAE0500B4DFB3 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		1593440D2E4DBA3000B4DFB3 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1593440C2E4DBA3000B4DFB3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		159345A52E4DD6AF00B4DFB3 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 159345A42E4DD6AF00B4DFB3 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		15FC84EB2E508F0C0045A0C5 /* CHTCollectionViewWaterfallLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15FC84EA2E508F0C0045A0C5 /* XCRemoteSwiftPackageReference "CHTCollectionViewWaterfallLayout" */;
+			productName = CHTCollectionViewWaterfallLayout;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 159341CA2E4D9C8F00B4DFB3 /* Project object */;
 }
