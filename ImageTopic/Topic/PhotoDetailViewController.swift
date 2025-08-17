@@ -211,8 +211,7 @@ final class PhotoDetailViewController: UIViewController {
             make.top.equalTo(chartLabel)
             make.leading.equalTo(sizeLabel)
             make.height.equalTo(24)
-            // TODO: 여기 삭제
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-AppPadding.verticalPadding)
         }
     }
     
@@ -241,7 +240,8 @@ final class PhotoDetailViewController: UIViewController {
         let profileUrl = URL(string: photo.user.profile_image.medium)
         photoUserImageView.kf.setImage(with: profileUrl)
         photoUserNameLabel.text = photo.user.name
-        photoDateLabel.text = photo.created_at
+        
+        photoDateLabel.text = DateFormatHelper.convertFormat(photo.created_at, from: DateFormatHelper.timeDashFormatter, to: DateFormatHelper.yyyyMdFormatter) + " 게시됨"
         
         let imageUrl = URL(string: photo.urls.small)
         photoImageView.kf.setImage(with: imageUrl)
