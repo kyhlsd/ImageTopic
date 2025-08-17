@@ -80,8 +80,8 @@ extension TopicTableViewCell: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(cellType: PhotoCollectionViewCell.self, for: indexPath)
-        let url = URL(string: list[indexPath.item].urls.small)
-        cell.configureData(url: url)
+        let row = list[indexPath.item]
+        cell.configureData(url: URL(string: row.urls.small), likes: row.likes)
         return cell
     }
     

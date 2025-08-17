@@ -39,11 +39,8 @@ final class PhotoDetailViewController: UIViewController {
         label.font = .Detail.bold
         return label
     }()
-    private let heartButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        return button
-    }()
+    
+    let heartButton = HeartButton()
     
     private let photoImageView = {
         let imageView = UIImageView()
@@ -211,13 +208,11 @@ final class PhotoDetailViewController: UIViewController {
             make.top.equalTo(chartLabel)
             make.leading.equalTo(sizeLabel)
             make.height.equalTo(24)
-            // TODO: 여기 삭제
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-AppPadding.verticalPadding)
         }
     }
     
     private func setupActions() {
-        heartButton.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
         chartSegmentedControl.addTarget(self, action: #selector(controlValueChanged), for: .valueChanged)
     }
     
@@ -228,6 +223,7 @@ final class PhotoDetailViewController: UIViewController {
         
         viewModel.output.photoResult.bind { [weak self] photoResult in
             self?.configurePhotoResult(with: photoResult)
+            self?.heartButton.configureData(id: photoResult?.id)
         }
     }
     
@@ -241,7 +237,8 @@ final class PhotoDetailViewController: UIViewController {
         let profileUrl = URL(string: photo.user.profile_image.medium)
         photoUserImageView.kf.setImage(with: profileUrl)
         photoUserNameLabel.text = photo.user.name
-        photoDateLabel.text = photo.created_at
+        
+        photoDateLabel.text = DateFormatHelper.convertFormat(photo.created_at, from: DateFormatHelper.timeDashFormatter, to: DateFormatHelper.yyyyMdFormatter) + " 게시됨"
         
         let imageUrl = URL(string: photo.urls.small)
         photoImageView.kf.setImage(with: imageUrl)
@@ -249,10 +246,6 @@ final class PhotoDetailViewController: UIViewController {
         sizeResultLabel.text = "\(photo.width) x \(photo.height)"
     }
     
-    @objc
-    private func heartButtonTapped() {
-        print(#function)
-    }
     @objc
     private func controlValueChanged(_ sender: UISegmentedControl) {
         print(sender.selectedSegmentIndex)

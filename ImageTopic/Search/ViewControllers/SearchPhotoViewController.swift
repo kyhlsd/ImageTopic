@@ -46,7 +46,7 @@ final class SearchPhotoViewController: UIViewController {
         layout.minimumInteritemSpacing = 4
         layout.sectionInset = .zero
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(cellType: PhotoCollectionViewCell.self)
+        collectionView.register(cellType: SearchPhotoCollectionViewCell.self)
         return collectionView
     }()
     
@@ -173,9 +173,9 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
             cell.configure(color: viewModel.colors[indexPath.item], isSelected: viewModel.getIsSelected(index: indexPath.item))
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(cellType: PhotoCollectionViewCell.self, for: indexPath)
-            let url = URL(string: viewModel.output.photos.value[indexPath.item].urls.small)
-            cell.configureData(url: url)
+            let cell = collectionView.dequeueReusableCell(cellType: SearchPhotoCollectionViewCell.self, for: indexPath)
+            let row = viewModel.output.photos.value[indexPath.item]
+            cell.configureData(url: URL(string: row.urls.small), likes: row.likes, id: row.id)
             return cell
         }
     }
@@ -186,6 +186,8 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         } else {
             let viewController = PhotoDetailViewController()
             viewController.configureData(viewModel.output.photos.value[indexPath.item])
+            viewController.heartButton.delegate = self
+            viewController.heartButton.indexPath = indexPath
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -209,5 +211,11 @@ extension SearchPhotoViewController: CHTCollectionViewDelegateWaterfallLayout {
 extension SearchPhotoViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         viewModel.input.searchWord.value = searchBar.text
+    }
+}
+
+extension SearchPhotoViewController: HeartButtonDelegate {
+    func reloadCell(indexPath: IndexPath) {
+        photoCollectionView.reloadItems(at: [indexPath])
     }
 }
