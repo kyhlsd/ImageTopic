@@ -50,6 +50,12 @@ final class SearchPhotoViewController: UIViewController {
         return collectionView
     }()
     
+    private let statusLabel = {
+        let label = UILabel()
+        label.font = .Body.bold
+        return label
+    }()
+    
     private let viewModel = SearchPhotoViewModel()
     
     override func viewDidLoad() {
@@ -73,7 +79,7 @@ final class SearchPhotoViewController: UIViewController {
         navigationItem.backButtonTitle = " "
         navigationItem.searchController = UISearchController()
         
-        [colorCollectionView, sortButton, photoCollectionView].forEach {
+        [colorCollectionView, sortButton, photoCollectionView, statusLabel].forEach {
             view.addSubview($0)
         }
     }
@@ -96,6 +102,10 @@ final class SearchPhotoViewController: UIViewController {
         photoCollectionView.snp.makeConstraints { make in
             make.top.equalTo(colorCollectionView.snp.bottom).offset(AppPadding.verticalInset)
             make.horizontalEdges.bottom.equalTo(safeArea)
+        }
+        
+        statusLabel.snp.makeConstraints { make in
+            make.center.equalTo(photoCollectionView)
         }
     }
     
@@ -129,6 +139,10 @@ final class SearchPhotoViewController: UIViewController {
         
         viewModel.output.scrollToTopTrigger.lazyBind { [weak self] _ in
             self?.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        }
+        
+        viewModel.output.statusText.bind { [weak self] text in
+            self?.statusLabel.text = text
         }
     }
     
@@ -169,6 +183,10 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == colorCollectionView {
             viewModel.input.colorCellTappedTrigger.value = indexPath.item
+        } else {
+            let viewController = PhotoDetailViewController()
+            viewController.configureData(viewModel.output.photos.value[indexPath.item])
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
     

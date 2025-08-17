@@ -24,6 +24,7 @@ final class SearchPhotoViewModel {
         let orderBy = Observable(OrderBy.relevant)
         let photos = Observable([PhotoResult]())
         let scrollToTopTrigger = Observable(())
+        let statusText = Observable("사진을 검색해주세요.")
     }
     
     let colors = ColorCategory.allCases
@@ -37,23 +38,19 @@ final class SearchPhotoViewModel {
         output = Output()
         
         input.searchWord.lazyBind { [weak self] _ in
-            print("searchWord")
             self?.page = 0
             self?.callRequest()
         }
         
         input.colorCellTappedTrigger.lazyBind { [weak self] index in
-            print("colorCellTapped")
             self?.colorCellTapped(index)
         }
         
         input.sortButtonTappedTrigger.lazyBind { [weak self] _ in
-            print("sortButtonTapped")
             self?.sortButtonTapped()
         }
         
         input.paginationTrigger.lazyBind { [weak self] _ in
-            print("pagenate")
             self?.callRequest()
         }
     }
@@ -91,7 +88,6 @@ final class SearchPhotoViewModel {
     }
     
     private func callRequest() {
-        print(#function)
         guard let searchWord = input.searchWord.value, !searchWord.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
     
             return
@@ -113,7 +109,10 @@ final class SearchPhotoViewModel {
             case .success(let searched):
                 if page == 1 {
                     self.output.photos.value = searched.results
-                    if !searched.results.isEmpty {
+                    if searched.results.isEmpty {
+                        self.output.statusText.value = "검색 결과가 없습니다."
+                    } else {
+                        self.output.statusText.value = ""
                         self.output.scrollToTopTrigger.value = ()
                     }
                 } else {
