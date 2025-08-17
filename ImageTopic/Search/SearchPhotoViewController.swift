@@ -126,6 +126,10 @@ final class SearchPhotoViewController: UIViewController {
         viewModel.output.photos.lazyBind { [weak self] _ in
             self?.photoCollectionView.reloadData()
         }
+        
+        viewModel.output.scrollToTopTrigger.lazyBind { [weak self] _ in
+            self?.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        }
     }
     
     private func setSortButtonTitle(_ text: String) {

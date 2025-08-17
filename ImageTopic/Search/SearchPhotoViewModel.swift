@@ -23,6 +23,7 @@ final class SearchPhotoViewModel {
         let reloadColorCellTrigger = Observable([Int]())
         let orderBy = Observable(OrderBy.relevant)
         let photos = Observable([PhotoResult]())
+        let scrollToTopTrigger = Observable(())
     }
     
     let colors = ColorCategory.allCases
@@ -112,6 +113,9 @@ final class SearchPhotoViewModel {
             case .success(let searched):
                 if page == 1 {
                     self.output.photos.value = searched.results
+                    if !searched.results.isEmpty {
+                        self.output.scrollToTopTrigger.value = ()
+                    }
                 } else {
                     self.output.photos.value.append(contentsOf: searched.results)
                 }
