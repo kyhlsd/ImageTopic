@@ -11,6 +11,7 @@ import Alamofire
 enum Router: URLRequestConvertible {
     case getTopicPhotos(topic: Topic, page: Int)
     case getStatistics(id: String)
+    case getSearched(keyword: String, page: Int, perPage: Int, orderBy: OrderBy, color: ColorCategory?)
     
     var baseURL: URL {
         guard let url = URL(string: APIInfo.baseURLString) else {
@@ -29,6 +30,8 @@ enum Router: URLRequestConvertible {
             return "/topics/\(topic.rawValue)/photos"
         case .getStatistics(let id):
             return "/photos/\(id)/statistics"
+        case .getSearched(_, _, _, _, _):
+            return "/search/photos"
         }
     }
     
@@ -43,6 +46,18 @@ enum Router: URLRequestConvertible {
             return [
                 URLQueryItem(name: "client_id", value: APIInfo.accessKey)
             ]
+        case .getSearched(let keyword, let page, let perPage, let orderBy, color: let color):
+            var items = [
+                URLQueryItem(name: "query", value: keyword),
+                URLQueryItem(name: "page", value: String(page)),
+                URLQueryItem(name: "per_page", value: String(perPage)),
+                URLQueryItem(name: "order_by", value: orderBy.rawValue)
+            ]
+            if let color {
+                items.append(URLQueryItem(name: "color", value: color.rawValue))
+            }
+            items.append(URLQueryItem(name: "client_id", value: APIInfo.accessKey))
+            return items
         }
     }
     

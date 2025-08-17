@@ -21,7 +21,7 @@ final class TopicViewModel {
         let responseTrigger = Observable([Int]())
     }
     
-    var topics = Topic.allCases
+    let topics = Topic.allCases
     
     init() {
         input = Input()
