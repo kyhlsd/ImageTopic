@@ -19,6 +19,27 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
         return imageView
     }()
     
+    private let starContainerView = {
+        let view = UIView()
+        view.backgroundColor = .darkGray
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    private let starImageview = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "star.fill")
+        imageView.tintColor = .yellow
+        return imageView
+    }()
+    
+    private let likeLabel = {
+        let label = UILabel()
+        label.font = .Detail.normal
+        label.textColor = .white
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -33,20 +54,45 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        likeLabel.text = nil
     }
     
-    func configureData(url: URL?) {
+    override func draw(_ rect: CGRect) {
+        starContainerView.layer.cornerRadius = starContainerView.frame.height / 2
+    }
+    
+    func configureData(url: URL?, likes: Int) {
         guard let url else { return }
         imageView.kf.setImage(with: url)
+        likeLabel.text = likes.formatted()
     }
     
     private func setupUI() {
-        contentView.addSubview(imageView)
+        [imageView, starContainerView].forEach {
+            contentView.addSubview($0)
+        }
+        [starImageview, likeLabel].forEach {
+            starContainerView.addSubview($0)
+        }
     }
     
     private func setupLayout() {
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        starContainerView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-AppPadding.verticalPadding)
+            make.leading.equalToSuperview().offset(AppPadding.horizontalPadding)
+        }
+        starImageview.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(AppPadding.horizontalInset)
+            make.verticalEdges.equalToSuperview().inset(4)
+            make.size.equalTo(12)
+        }
+        likeLabel.snp.makeConstraints { make in
+            make.leading.equalTo(starImageview.snp.trailing).offset(AppPadding.horizontalInset)
+            make.verticalEdges.equalTo(starImageview)
+            make.trailing.equalToSuperview().offset(-AppPadding.horizontalInset)
         }
     }
 }

@@ -174,8 +174,8 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(cellType: PhotoCollectionViewCell.self, for: indexPath)
-            let url = URL(string: viewModel.output.photos.value[indexPath.item].urls.small)
-            cell.configureData(url: url)
+            let row = viewModel.output.photos.value[indexPath.item]
+            cell.configureData(url: URL(string: row.urls.small), likes: row.likes)
             return cell
         }
     }
