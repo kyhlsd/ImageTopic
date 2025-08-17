@@ -17,11 +17,11 @@ final class TopicViewModel {
     }
     
     struct Output {
-        var photos = [[PhotoResult]](repeating: [PhotoResult](), count: Topic.allCases.count)
+        var photos = [[PhotoResult]](repeating: [PhotoResult](), count: 3)
         let responseTrigger = Observable([Int]())
     }
     
-    let topics = Topic.allCases
+    let topics = Array(Topic.allCases[0...2])
     
     init() {
         input = Input()

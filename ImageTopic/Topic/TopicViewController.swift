@@ -99,7 +99,9 @@ final class TopicViewController: UIViewController {
     
     @objc
     private func profileButtonTapped() {
-        print(#function)
+        let viewController = ProfileSettingViewController()
+        viewController.delegate = self
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
@@ -121,5 +123,11 @@ extension TopicViewController: PushDetailVCDelegate {
         let viewController = PhotoDetailViewController()
         viewController.configureData(photoResult)
         navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+extension TopicViewController: ProfileImageDelegate {
+    func setProfileImage(image: String) {
+        profileButton.setImage(UIImage(named: image), for: .normal)
     }
 }
