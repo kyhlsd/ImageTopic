@@ -39,7 +39,8 @@ final class PhotoDetailViewController: UIViewController {
         label.font = .Detail.bold
         return label
     }()
-    private let heartButton = HeartButton()
+    
+    let heartButton = HeartButton()
     
     private let photoImageView = {
         let imageView = UIImageView()

@@ -22,6 +22,11 @@ final class SearchPhotoCollectionViewCell: PhotoCollectionViewCell {
         heartButton.layer.cornerRadius = heartButton.frame.height / 2
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        heartButton.indexPath = nil
+    }
+    
     func configureData(url: URL?, likes: Int, id: String) {
         super.configureData(url: url, likes: likes)
         heartButton.configureData(id: id)

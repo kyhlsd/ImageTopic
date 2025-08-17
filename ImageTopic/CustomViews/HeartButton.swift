@@ -14,6 +14,7 @@ protocol HeartButtonDelegate: AnyObject {
 final class HeartButton: UIButton {
     
     private var id: String? = nil
+    var indexPath: IndexPath?
     weak var delegate: HeartButtonDelegate?
     
     override init(frame: CGRect) {
@@ -49,6 +50,8 @@ final class HeartButton: UIButton {
         guard let id else { return }
         UserDefaultManager.Favorites.toggleItemInMovieBox(id)
         setImage()
-//        delegate?.reloadCell(indexPath: <#T##IndexPath#>)
+        
+        guard let indexPath else { return }
+        delegate?.reloadCell(indexPath: indexPath)
     }
 }

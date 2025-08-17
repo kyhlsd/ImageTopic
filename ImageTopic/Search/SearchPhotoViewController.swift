@@ -186,6 +186,8 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
         } else {
             let viewController = PhotoDetailViewController()
             viewController.configureData(viewModel.output.photos.value[indexPath.item])
+            viewController.heartButton.delegate = self
+            viewController.heartButton.indexPath = indexPath
             navigationController?.pushViewController(viewController, animated: true)
         }
     }
@@ -209,5 +211,11 @@ extension SearchPhotoViewController: CHTCollectionViewDelegateWaterfallLayout {
 extension SearchPhotoViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         viewModel.input.searchWord.value = searchBar.text
+    }
+}
+
+extension SearchPhotoViewController: HeartButtonDelegate {
+    func reloadCell(indexPath: IndexPath) {
+        photoCollectionView.reloadItems(at: [indexPath])
     }
 }
