@@ -39,11 +39,7 @@ final class PhotoDetailViewController: UIViewController {
         label.font = .Detail.bold
         return label
     }()
-    private let heartButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        return button
-    }()
+    private let heartButton = HeartButton()
     
     private let photoImageView = {
         let imageView = UIImageView()
@@ -216,7 +212,6 @@ final class PhotoDetailViewController: UIViewController {
     }
     
     private func setupActions() {
-        heartButton.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
         chartSegmentedControl.addTarget(self, action: #selector(controlValueChanged), for: .valueChanged)
     }
     
@@ -227,6 +222,7 @@ final class PhotoDetailViewController: UIViewController {
         
         viewModel.output.photoResult.bind { [weak self] photoResult in
             self?.configurePhotoResult(with: photoResult)
+            self?.heartButton.configureData(id: photoResult?.id)
         }
     }
     
@@ -249,10 +245,6 @@ final class PhotoDetailViewController: UIViewController {
         sizeResultLabel.text = "\(photo.width) x \(photo.height)"
     }
     
-    @objc
-    private func heartButtonTapped() {
-        print(#function)
-    }
     @objc
     private func controlValueChanged(_ sender: UISegmentedControl) {
         print(sender.selectedSegmentIndex)

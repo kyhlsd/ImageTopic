@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
-    private let imageView = {
+class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
+    let imageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = Constants.cornerRadius
@@ -67,7 +67,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
         likeLabel.text = likes.formatted()
     }
     
-    private func setupUI() {
+    func setupUI() {
         [imageView, starContainerView].forEach {
             contentView.addSubview($0)
         }
@@ -76,7 +76,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell, Identifying {
         }
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
