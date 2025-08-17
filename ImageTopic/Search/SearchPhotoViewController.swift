@@ -28,10 +28,6 @@ final class SearchPhotoViewController: UIViewController {
         var config = UIButton.Configuration.plain()
         let symbolConfig = UIImage.SymbolConfiguration(font: .Detail.bold)
         config.image = UIImage(systemName: "text.alignleft")?.withConfiguration(symbolConfig)
-        
-        var container = AttributeContainer()
-        container.font = UIFont.Detail.bold
-        config.attributedTitle = AttributedString("최신순", attributes: container)
         config.imagePadding = 8
         config.baseForegroundColor = .black
         config.baseBackgroundColor = .white
@@ -62,6 +58,7 @@ final class SearchPhotoViewController: UIViewController {
         setupUI()
         setupLayout()
         setupDelegates()
+        setupActions()
         setupBindings()
     }
     
@@ -112,15 +109,34 @@ final class SearchPhotoViewController: UIViewController {
         navigationItem.searchController?.searchBar.delegate = self
     }
     
+    private func setupActions() {
+        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+    }
+    
     private func setupBindings() {
         viewModel.output.reloadColorCellTrigger.lazyBind { [weak self] indices in
             let indexPaths = indices.map { IndexPath(item: $0, section: 0)}
             self?.colorCollectionView.reloadItems(at: indexPaths)
         }
         
+        viewModel.output.orderBy.bind { [weak self] orderBy in
+            self?.setSortButtonTitle(orderBy.description)
+        }
+        
         viewModel.output.photos.lazyBind { [weak self] _ in
             self?.photoCollectionView.reloadData()
         }
+    }
+    
+    private func setSortButtonTitle(_ text: String) {
+        var container = AttributeContainer()
+        container.font = UIFont.Detail.bold
+        sortButton.configuration?.attributedTitle = AttributedString(text, attributes: container)
+    }
+    
+    @objc
+    private func sortButtonTapped() {
+        viewModel.input.sortButtonTappedTrigger.value = ()
     }
 }
 
@@ -149,6 +165,12 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == colorCollectionView {
             viewModel.input.colorCellTappedTrigger.value = indexPath.item
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.output.photos.value.count - 6 {
+            viewModel.input.paginationTrigger.value = ()
         }
     }
 }
