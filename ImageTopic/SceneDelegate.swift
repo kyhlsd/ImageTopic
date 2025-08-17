@@ -20,15 +20,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-        let topicNav = UINavigationController(rootViewController: SearchPhotoViewController())
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
-        topicNav.navigationBar.standardAppearance = navAppearance
-        topicNav.navigationBar.scrollEdgeAppearance = navAppearance
-        topicNav.navigationBar.compactAppearance = navAppearance
-        topicNav.view.backgroundColor = .white
-        topicNav.navigationBar.tintColor = .black
-        topicNav.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "chart.xyaxis.line"), tag: 0)
+        
+        let topicNav = UINavigationController(rootViewController: TopicViewController())
+        setupNav(topicNav, image: "chart.xyaxis.line", tag: 0)
+        let searchNav = UINavigationController(rootViewController: SearchPhotoViewController())
+        setupNav(searchNav, image: "magnifyingglass", tag: 1)
         
         let tabBarController = UITabBarController()
         let tabAppearance = UITabBarAppearance()
@@ -36,10 +34,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.tabBar.scrollEdgeAppearance = tabAppearance
         tabBarController.tabBar.tintColor = .black
         tabBarController.tabBar.unselectedItemTintColor = .systemGray
-        tabBarController.viewControllers = [topicNav, ViewController()]
+        tabBarController.viewControllers = [topicNav, searchNav]
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
+        
+        func setupNav(_ nav: UINavigationController, image: String, tag: Int) {
+            nav.navigationBar.standardAppearance = navAppearance
+            nav.navigationBar.scrollEdgeAppearance = navAppearance
+            nav.navigationBar.compactAppearance = navAppearance
+            nav.view.backgroundColor = .white
+            nav.navigationBar.tintColor = .black
+            nav.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: image), tag: tag)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
