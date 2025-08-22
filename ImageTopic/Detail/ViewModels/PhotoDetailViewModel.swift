@@ -32,10 +32,6 @@ final class PhotoDetailViewModel {
     }
     
     private func callRequest() {
-        guard NetworkMonitor.shared.isConnected else {
-            output.errorMessage.value = "네트워크가 연결되어 있지 않습니다."
-            return
-        }
         guard let photoResult = output.photoResult.value else { return }
         
         let url = Router.getStatistics(id: photoResult.id)

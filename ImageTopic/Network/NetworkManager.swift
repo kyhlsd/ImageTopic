@@ -13,6 +13,10 @@ final class NetworkManager {
     private init() {}
     
     func callRequest<T: Decodable>(url: URLRequestConvertible, type: T.Type = T.self, completionHandler: @escaping (Result<T, Error>) -> Void) {
+        guard NetworkMonitor.shared.isConnected else {
+            completionHandler(.failure(APIError.networkDisconnected))
+            return
+        }
         AF.request(url)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: type) { response in

@@ -12,6 +12,7 @@ enum APIError: Int, LocalizedError {
     case unAuthorized = 401
     case forbidden = 403
     case notFound = 404
+    case networkDisconnected = 0
     case unknown = 500
     
     var errorDescription: String? {
@@ -24,6 +25,8 @@ enum APIError: Int, LocalizedError {
             return "권한이 없습니다."
         case .notFound:
             return "존재하지 않는 요청입니다."
+        case .networkDisconnected:
+            return "네트워크가 연결되어 있지 않습니다."
         case .unknown:
             return "알 수 없는 오류가 발생했습니다."
         }
