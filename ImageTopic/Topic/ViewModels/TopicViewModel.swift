@@ -50,10 +50,6 @@ final class TopicViewModel {
     }
     
     private func callRequest(index: Int, page: Int, group: DispatchGroup? = nil) {
-        guard NetworkMonitor.shared.isConnected else {
-            errorMessage = "네트워크가 연결되어 있지 않습니다."
-            return
-        }
         
         group?.enter()
         

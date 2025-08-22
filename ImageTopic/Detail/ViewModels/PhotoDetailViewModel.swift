@@ -14,11 +14,13 @@ final class PhotoDetailViewModel {
     
     struct Input {
         let viewDidLoadTrigger = Observable(())
+        let chartTrigger = Observable(ChartSegmented.views)
     }
     
     struct Output {
         let statistic = Observable<StatisticResult?>(nil)
         let photoResult = Observable<PhotoResult?>(nil)
+        let chartData = Observable([ValueResult]())
         let errorMessage = Observable("")
     }
     
@@ -29,22 +31,29 @@ final class PhotoDetailViewModel {
         input.viewDidLoadTrigger.lazyBind { [weak self] _ in
             self?.callRequest()
         }
+        input.chartTrigger.lazyBind { [weak self] type in
+            guard let self, let statisticValue = self.output.statistic.value else { return }
+            
+            switch type {
+            case .views:
+                self.output.chartData.value = statisticValue.views.historical.values
+            case .downloads:
+                self.output.chartData.value = statisticValue.downloads.historical.values
+            }
+        }
     }
     
     private func callRequest() {
-        guard NetworkMonitor.shared.isConnected else {
-            output.errorMessage.value = "네트워크가 연결되어 있지 않습니다."
-            return
-        }
         guard let photoResult = output.photoResult.value else { return }
         
         let url = Router.getStatistics(id: photoResult.id)
         NetworkManager.shared.callRequest(url: url, type: StatisticResult.self) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let value):
-                self?.output.statistic.value = value
+                self.output.statistic.value = value
             case .failure(let error):
-                self?.output.errorMessage.value = error.localizedDescription
+                self.output.errorMessage.value = error.localizedDescription
             }
         }
     }

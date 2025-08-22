@@ -96,10 +96,11 @@ final class PhotoDetailViewController: UIViewController {
         return label
     }()
     private let chartSegmentedControl = {
-        let control = UISegmentedControl(items: ["조회", "다운로드"])
+        let control = UISegmentedControl(items: ChartSegmented.allCases.map { $0.rawValue })
         control.selectedSegmentIndex = 0
         return control
     }()
+    private let chartView = ChartView(frame: .zero, data: [])
     
     private let viewModel = PhotoDetailViewModel()
     
@@ -129,7 +130,7 @@ final class PhotoDetailViewController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [photoUserImageView, photoUserNameLabel, photoDateLabel, heartButton, photoImageView, infoLabel, chartLabel, sizeLabel, viewsLabel, downloadLabel, sizeResultLabel, viewsResultLabel, downloadResultLabel, chartSegmentedControl].forEach {
+        [photoUserImageView, photoUserNameLabel, photoDateLabel, heartButton, photoImageView, infoLabel, chartLabel, sizeLabel, viewsLabel, downloadLabel, sizeResultLabel, viewsResultLabel, downloadResultLabel, chartSegmentedControl, chartView].forEach {
             contentView.addSubview($0)
         }
     }
@@ -208,6 +209,11 @@ final class PhotoDetailViewController: UIViewController {
             make.top.equalTo(chartLabel)
             make.leading.equalTo(sizeLabel)
             make.height.equalTo(24)
+        }
+        chartView.snp.makeConstraints { make in
+            make.top.equalTo(chartSegmentedControl.snp.bottom).offset(AppPadding.verticalInset)
+            make.leading.equalTo(sizeLabel)
+            make.trailing.equalTo(sizeResultLabel)
             make.bottom.equalToSuperview().offset(-AppPadding.verticalPadding)
         }
     }
@@ -226,6 +232,10 @@ final class PhotoDetailViewController: UIViewController {
             self?.heartButton.configureData(id: photoResult?.id)
         }
         
+        viewModel.output.chartData.lazyBind { [weak self] data in
+            self?.chartView.setData(data)
+        }
+        
         viewModel.output.errorMessage.lazyBind { [weak self] text in
             self?.showDefaultAlert(title: "데이터 가져오기 실패", message: text)
         }
@@ -234,6 +244,7 @@ final class PhotoDetailViewController: UIViewController {
     private func configureStatistics(with statistic: StatisticResult?) {
         viewsResultLabel.text = statistic?.views.total.formatted()
         downloadResultLabel.text = statistic?.downloads.total.formatted()
+        controlValueChanged(chartSegmentedControl)
     }
     
     private func configurePhotoResult(with photo: PhotoResult?) {
@@ -252,6 +263,6 @@ final class PhotoDetailViewController: UIViewController {
     
     @objc
     private func controlValueChanged(_ sender: UISegmentedControl) {
-        print(sender.selectedSegmentIndex)
+        viewModel.input.chartTrigger.value = ChartSegmented.allCases[sender.selectedSegmentIndex]
     }
 }
