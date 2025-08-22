@@ -9,11 +9,11 @@ import Foundation
 
 struct StatisticResult: Decodable {
     let id: String
-    let downloads: DownloadResult
-    let views: ViewResult
+    let downloads: StatisticSubResult
+    let views: StatisticSubResult
 }
 
-struct DownloadResult: Decodable {
+struct StatisticSubResult: Decodable {
     let total: Int
     let historical: HistoricalResult
 }
@@ -28,7 +28,7 @@ struct ValueResult: Decodable {
     let value: Int
 }
 
-struct ViewResult: Decodable {
-    let total: Int
-    let historical: HistoricalResult
+enum ChartSegmented: String, CaseIterable {
+    case views = "조회"
+    case downloads = "다운로드"
 }
