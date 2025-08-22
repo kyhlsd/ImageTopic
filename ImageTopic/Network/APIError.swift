@@ -23,7 +23,7 @@ enum APIError: Int, LocalizedError {
         case .forbidden:
             return "권한이 없습니다."
         case .notFound:
-            return "응답이 존재하지 않습니다."
+            return "존재하지 않는 요청입니다."
         case .unknown:
             return "알 수 없는 오류가 발생했습니다."
         }

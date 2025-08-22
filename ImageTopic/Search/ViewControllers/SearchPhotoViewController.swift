@@ -144,6 +144,10 @@ final class SearchPhotoViewController: UIViewController {
         viewModel.output.statusText.bind { [weak self] text in
             self?.statusLabel.text = text
         }
+        
+        viewModel.output.errorMessage.lazyBind { [weak self] text in
+            self?.showDefaultAlert(title: "데이터 가져오기 실패", message: text)
+        }
     }
     
     private func setSortButtonTitle(_ text: String) {

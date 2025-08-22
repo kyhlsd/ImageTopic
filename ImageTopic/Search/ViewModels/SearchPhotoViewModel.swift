@@ -25,6 +25,7 @@ final class SearchPhotoViewModel {
         let photos = Observable([PhotoResult]())
         let scrollToTopTrigger = Observable(())
         let statusText = Observable("사진을 검색해주세요.")
+        let errorMessage = Observable("")
     }
     
     let colors = ColorCategory.allCases
@@ -88,8 +89,12 @@ final class SearchPhotoViewModel {
     }
     
     private func callRequest() {
+        guard NetworkMonitor.shared.isConnected else {
+            output.errorMessage.value = "네트워크가 연결되어 있지 않습니다."
+            return
+        }
+        
         guard let searchWord = input.searchWord.value, !searchWord.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-    
             return
         }
         
@@ -121,7 +126,7 @@ final class SearchPhotoViewModel {
                 self.isEnd = self.page >= searched.total_pages
             case .failure(let error):
                 page -= 1
-                print(error)
+                self.output.errorMessage.value = error.localizedDescription
             }
         }
     }

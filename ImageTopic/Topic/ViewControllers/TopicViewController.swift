@@ -95,6 +95,10 @@ final class TopicViewController: UIViewController {
             let indexPaths = indexPaths.map { IndexPath(row: $0, section: 0) }
             self?.tableView.reloadRows(at: indexPaths, with: .none)
         }
+        
+        viewModel.output.errorMessageTrigger.lazyBind { [weak self] text in
+            self?.showDefaultAlert(title: "데이터 가져오기 실패", message: text)
+        }
     }
     
     @objc
