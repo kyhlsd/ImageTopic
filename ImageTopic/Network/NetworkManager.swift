@@ -19,7 +19,9 @@ final class NetworkManager {
                 switch response.result {
                 case .success(let value):
                     completionHandler(.success(value))
-                case .failure(let error):
+                case .failure(_):
+                    let statusCode = response.response?.statusCode ?? -1
+                    let error = APIError(rawValue: statusCode) ?? .unknown
                     completionHandler(.failure(error))
                 }
             }

@@ -46,7 +46,6 @@ final class HeartButton: UIButton {
     
     @objc
     private func buttonTapped() {
-        print(#function)
         guard let id else { return }
         UserDefaultManager.Favorites.toggleItemInMovieBox(id)
         setImage()

@@ -19,9 +19,11 @@ final class TopicViewModel {
     struct Output {
         var photos = [[PhotoResult]](repeating: [PhotoResult](), count: 3)
         let responseTrigger = Observable([Int]())
+        let errorMessageTrigger = Observable("")
     }
     
     let topics = Array(Topic.allCases[0...2])
+    var errorMessage = ""
     
     init() {
         input = Input()
@@ -38,11 +40,21 @@ final class TopicViewModel {
         callRequest(index: 1, page: 1, group: group)
         callRequest(index: 2, page: 1, group: group)
         group.notify(queue: .main) { [weak self] in
-            self?.output.responseTrigger.value = [0, 1, 2]
+            guard let self else { return }
+            self.output.responseTrigger.value = [0, 1, 2]
+            if !errorMessage.isEmpty {
+                self.output.errorMessageTrigger.value = errorMessage
+                self.errorMessage = ""
+            }
         }
     }
     
     private func callRequest(index: Int, page: Int, group: DispatchGroup? = nil) {
+        guard NetworkMonitor.shared.isConnected else {
+            errorMessage = "네트워크가 연결되어 있지 않습니다."
+            return
+        }
+        
         group?.enter()
         
         let url = Router.getTopicPhotos(topic: topics[index], page: page)
@@ -52,7 +64,7 @@ final class TopicViewModel {
                 self?.output.photos[index] = value
                 group?.leave()
             case .failure(let error):
-                print(error)
+                self?.errorMessage = error.localizedDescription
                 group?.leave()
             }
         }

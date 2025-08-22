@@ -225,6 +225,10 @@ final class PhotoDetailViewController: UIViewController {
             self?.configurePhotoResult(with: photoResult)
             self?.heartButton.configureData(id: photoResult?.id)
         }
+        
+        viewModel.output.errorMessage.lazyBind { [weak self] text in
+            self?.showDefaultAlert(title: "데이터 가져오기 실패", message: text)
+        }
     }
     
     private func configureStatistics(with statistic: StatisticResult?) {
